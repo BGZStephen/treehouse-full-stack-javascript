@@ -5,12 +5,12 @@ function printError(error) {
   console.error(error.message)
 }
 
-function printMessage(username, badgeCount, points) {
-  const message = `${username} has ${badgeCount} badges and ${points} points in JavaScript.`;
+function printMessage(username, badgeCount, points, subject) {
+  const message = `${username} has ${badgeCount} badges and ${points} points in ${subject}.`;
   console.log(message);
 }
 
-function get(username) {
+function get(username, subject) {
   try {
     // connect to the API url https://teamtreehouse.com/username.json
     const request = https.get(`https://teamtreehouse.com/${username}.json`, response => {
@@ -23,7 +23,8 @@ function get(username) {
         response.on(`end`, () => {
           try {
             const profile = JSON.parse(body)
-            printMessage(username, profile.badges.length, profile.points.JavaScript)
+            let subjectPoints = profile.points.subject;
+            printMessage(username, profile.badges.length, profile.points[subject], subject)
             // parse the data
             // print the data
           } catch (error) {

@@ -3,6 +3,6 @@
 
 const profile = require(`./profile.js`)
 
-const users = process.argv.slice(2)
-console.log(process.argv)
-users.forEach(profile.get)
+const users = process.argv.slice(2, 3)
+const subject = process.argv.slice(3)
+profile.get(users, subject)
