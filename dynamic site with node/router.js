@@ -1,4 +1,5 @@
-var Profile = require("./profile.js");
+const Profile = require("./profile.js");
+const render = require("./render.js");
 
 // 2 handle the http route GET and POST
 function home(request, response) {
@@ -7,9 +8,10 @@ function home(request, response) {
       // show search field
       response.statusCode = 200;
       response.setHeader('Content-Type', 'text/plain');
-      response.write(`Header here \n`)
-      response.write(`Search here \n`)
-      response.end(`Footer here \n`)
+      render.view(`header`, {}, response)
+      render.view(`search`, {}, response)
+      render.view(`footer`, {}, response)
+      response.end();
   }
     // if url = `/` and POST
       //redirect to username
@@ -22,22 +24,25 @@ function user(request, response) {
   if(username.length > 0 && username != "favicon.ico") {
     response.statusCode = 200;
     response.setHeader('Content-Type', 'text/plain');
-    response.write(`Header here \n`)
+    render.view(`header`, {}, response)
     //get JSON from Treehouse
     var studentProfile = new Profile(username);
     studentProfile.on("end", function(profileJSON) {
-      let values = {
+      var values = {
         avatarUrl: profileJSON.gravatar_url,
         username: profileJSON.profile_name,
         badgeCount: profileJSON.badges.length,
         jsPoints: profileJSON.points.JavaScript
       }
-      response.write(values.username + ` has ` + values.badgeCount + ` badges` + `\n`)
-      response.end(`Footer here \n`)
+      render.view(`profile`, values, response)
+      render.view(`footer`, {}, response)
+      response.end();
     });
     studentProfile.on("error", function(error){
-      response.write(error.message + `\n`);
-      response.end(`Footer here \n`)
+      render.view(`error`, {errorMessage: error.message}, response)
+      render.view(`search`, {}, response)
+      render.view(`footer`, {}, response)
+      response.end();
     });
   }
 }
