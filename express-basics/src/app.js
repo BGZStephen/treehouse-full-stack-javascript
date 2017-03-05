@@ -2,12 +2,17 @@
 
 const express = require(`express`);
 const posts = require(`./mock/posts.json`);
+const pug = require(`pug`);
 
 const app = express();
 
+app.set(`view engine`, `pug`)
+app.set(`views`, __dirname + `/templates`)
+
 app.get(`/`, function(req, res) {
-  res.send(`<h1>Hello World!</h1>`)
+  res.render(`index`)
 })
+
 
 app.get(`/blog/:title?`, function(req, res) {
   const title = req.params.title
@@ -15,8 +20,8 @@ app.get(`/blog/:title?`, function(req, res) {
     res.status(503);
     res.send(`This page is under construction`)
   } else {
-    const post = posts[title]
-    res.send(post)
+    const post = posts[title] || {}
+    res.render(`post`, {post: post})
   }
 })
 

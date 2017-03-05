@@ -11,5 +11,10 @@
     "url": "https://github.com/BGZStephen/treehouse-full-stack-javascript/tree/master/express-basics"
   },
   "author": "Stephen Wright",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.0",
+    "jade": "^1.11.0",
+    "pug": "^2.0.0-beta11"
+  }
 }
