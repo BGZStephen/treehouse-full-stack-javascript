@@ -28,14 +28,56 @@ router.get(`/:qID`, function(req, res) {
   });
 })
 
-// GET /questions/:qID
+// POST /questions/:qID/answers
+// route for creating questions
+router.post(`/:qID/answers`, function(req, res) {
+  res.json({
+    response: `you sent me a POST request to: /answers`,
+    questionID: req.params.qID,
+    body: req.body
+  });
+})
 
-// GET /questions/
+// PUT /question/:qID/answers/:aID
+// put a specific answer
+router.put(`/:qID/answers/:aID`, function(req, res) {
+  res.json({
+    response: `you sent me a PUT request to: /answers`,
+    questionID: req.params.qID,
+    answerID: req.params.aID,
+    body: req.body
+  });
+})
 
-// POST /questions/:qID/answers/:aID
+// DELETE /question/:qID/answers/:aID
+// delete a specific answer
+router.delete(`/:qID/answers/:aID`, function(req, res) {
+  res.json({
+    response: `you sent me a DELETE request to: /answers`,
+    questionID: req.params.qID,
+    answerID: req.params.aID
+  });
+})
 
-// POST /questions/:qID/answers/aID/vote-up
+// POST /question/:qID/answers/:aID/vote-up
+// POST /question/:qID/answers/:aID/vote-down
+// vote on a specific answer
+router.post(`/:qID/answers/:aID/vote-:dir`, function(req, res, next) {
+  if(req.params.dir.search(/^(up|down)$/) === -1) {
+    var err = new Error(`Not Found`)
+    err.status = 404
+    next(err)
+  } else {
+    next()
+  }
+}, function(req, res) {
+  res.json({
+    response: `you sent me a POST request to: /vote-` + req.params.dir,
+    questionID: req.params.qID,
+    answerID: req.params.aID,
+    vote: req.params.dir
+  });
+})
 
-// POST /questions/:qID/answers/aID/vote-down
 
 module.exports = router;
