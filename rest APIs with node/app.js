@@ -1,6 +1,7 @@
 `use strict`
 
 var jsonParser = require(`body-parser`).json;
+var routes = require(`./routes`)
 var express = require(`express`)
 var app = express();
 
@@ -13,9 +14,9 @@ var jsonCheck = function(req, res, next) {
   next()
 };
 
-app.use(jsonCheck);
 app.use(jsonParser());
-app.use(jsonCheck);
+
+app.use("/questions", routes)
 
 var port = process.env.PORT || 3000;
 
@@ -30,15 +31,3 @@ app.listen(port, function() {
 // Edit an Answer
 // Delete an Answer
 // Vote on Answers
-
-// GET /questions/
-
-// GET /questions/:qID
-
-// GET /questions/
-
-// POST /questions/:qID/answers/:aID
-
-// POST /questions/:qID/answers/aID/vote-up
-
-// POST /questions/:qID/answers/aID/vote-down
