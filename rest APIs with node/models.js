@@ -10,8 +10,8 @@ var sortAnswers = function(a, b) {
     if(a.votes === b.votes) {
       return a.updatedAt - b.updatedAt;
     }
-    return a.votes - b.votes
-});
+    return b.votes - a.votes
+};
 
 var AnswerSchema = new Schema({
   text: String,
