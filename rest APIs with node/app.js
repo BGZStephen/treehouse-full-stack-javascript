@@ -1,5 +1,6 @@
 `use strict`
 
+var mongoose = require(`mongoose`);
 var jsonParser = require(`body-parser`).json;
 var logger = require(`morgan`);
 var routes = require(`./routes`);
@@ -17,6 +18,18 @@ var jsonCheck = function(req, res, next) {
 
 app.use(logger(`dev`))
 app.use(jsonParser());
+
+mongoose.connect(`mongodb://localhost:27017/qa`)
+
+var db = mongoose.connection;
+
+db.on("error", function() {
+  console.error(`connection error:`, err);
+})
+
+db.once(`open`, function() {
+  console.log(`database connection successful`)
+});
 
 app.use("/questions", routes)
 
